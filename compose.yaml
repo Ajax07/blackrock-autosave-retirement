@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  autosave-api:
+    build: .
+    container_name: blackrock-autosave
+    ports:
+      - "5477:5477"
+    restart: always
