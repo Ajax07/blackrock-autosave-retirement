@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+numpy
+pytest
+locust
+python-dotenv
+psutil
