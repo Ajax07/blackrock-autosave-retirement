@@ -1,3 +1,11 @@
+# BlackRock AutoSave Retirement Engine  
+### Production-Grade Automated Micro-Investment Platform
+
+
+![Python](https://img.shields.io/badge/python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-framework-green)
+![Docker](https://img.shields.io/badge/Docker-container-blue)
+
 ## 🏗 System Architecture
 
 ```mermaid
