@@ -305,6 +305,103 @@ Future enhancement:
 
 ---
 
+# Future Enhancements & Roadmap
+
+Given more development time, the platform can be extended with the following improvements to enhance scalability, intelligence, and production readiness.
+
+---
+
+## ⚡ Dependency & Performance Optimization
+
+* Replace `pip` with **uv package manager** for faster dependency resolution and reproducible builds.
+* Improve startup performance and dependency management.
+* Reduce container build time and deployment latency.
+
+---
+
+## AI/ML-Powered Smart Investment Engine
+
+As an AI/ML-driven enhancement, the platform can incorporate intelligent decision-making:
+
+* **Smart Rounding Strategy** using machine learning to dynamically adjust rounding thresholds based on:
+
+  * market volatility
+  * user spending behavior
+  * risk appetite
+* Predictive savings recommendations using time-series analysis.
+* Personalized retirement planning using behavioral modeling.
+
+---
+
+## Autonomous AI Agents
+
+Introduce AI agents to automate financial intelligence tasks:
+
+* Fetch latest tax slab information from trusted sources.
+* Retrieve current inflation rates and market indicators.
+* Monitor regulatory changes affecting retirement investments.
+* Automatically update financial assumptions.
+
+This enables a self-adapting financial platform.
+
+---
+
+## Configuration-Driven Architecture
+
+Replace hardcoded constants with centralized configuration:
+
+* Introduce **YAML-based configuration files** for:
+
+  * tax slabs
+  * investment limits
+  * return rates
+  * inflation assumptions
+  * financial constants
+* Enables single-point updates without code changes.
+* Improves maintainability and production flexibility.
+
+---
+
+## Financial Analytics Dashboard
+
+Develop a real-time monitoring dashboard for financial insights and KPIs:
+
+* Total investment growth tracking
+* User savings behavior analytics
+* Return projections visualization
+* System performance metrics
+* Risk and portfolio analysis
+
+Potential tools:
+
+* Streamlit / React dashboard
+* Grafana monitoring integration
+
+---
+
+## Persistent Storage & Data Platform
+
+* Transaction history persistence
+* Time-series database integration
+* Portfolio tracking capabilities
+* Investment audit trail
+
+---
+
+## Advanced Scalability Improvements
+
+* Async batch processing for high transaction volumes
+* Distributed processing architecture
+* Event-driven streaming pipeline
+* Redis caching layer
+
+---
+
+## Vision
+
+The long-term vision is to evolve this system into a fully autonomous, AI-driven retirement investment platform that continuously adapts to market conditions, regulatory changes, and user financial behavior.
+
+
 # Author
 
 Ajay Chouhan

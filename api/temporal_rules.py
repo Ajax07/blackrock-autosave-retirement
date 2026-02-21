@@ -27,7 +27,7 @@ def apply_temporal_rules(request: TemporalFilterRequest):
     # STEP 1 — Validate + convert expenses → transactions
     for exp in request.transactions:
 
-        # ❌ negative amount check
+        # negative amount check
         if exp.amount <= 0:
             invalid_transactions.append({
                 "date": exp.date,
@@ -36,7 +36,7 @@ def apply_temporal_rules(request: TemporalFilterRequest):
             })
             continue
 
-        # ❌ duplicate timestamp check
+        # duplicate timestamp check
         if exp.date in seen_timestamps:
             invalid_transactions.append({
                 "date": exp.date,

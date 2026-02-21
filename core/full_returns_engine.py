@@ -13,7 +13,7 @@ def process_full_pipeline(request, rate):
     invalid_transactions = []
     seen = set()
 
-    # STEP 1 — validate + round
+    # validate + round
     for exp in request.transactions:
 
         if exp.amount <= 0:
@@ -43,15 +43,15 @@ def process_full_pipeline(request, rate):
             "remanent": rem
         })
 
-    # STEP 2 — apply temporal rules
+    # apply temporal rules
     processed = apply_period_rules(valid_transactions, request.q, request.p)
 
-    # STEP 3 — aggregate by k periods
+    #  aggregate by k periods
     grouped = aggregate_by_k(processed, request.k)
 
     total_investment = sum(tx["remanent"] for tx in processed)
 
-    # STEP 4 — calculate returns
+    # calculate returns
     years = RETIREMENT_AGE - request.age
 
     result = investment_projection(
