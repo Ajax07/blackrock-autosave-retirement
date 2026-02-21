@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from api.transaction import router as transaction_router
 from api.returns import router as returns_router
+from api.validator import router as validator_router
+
 
 app = FastAPI(title="BlackRock AutoSave Retirement Engine")
 
+app.include_router(validator_router)
 app.include_router(transaction_router)
 app.include_router(returns_router)
 
