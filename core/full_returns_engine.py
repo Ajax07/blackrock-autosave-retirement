@@ -1,43 +1,30 @@
-from fastapi import APIRouter
-from models.filter_models import TemporalFilterRequest
 from core.rounding_engine import round_to_100
 from core.period_engine import apply_period_rules
 from core.aggregation_engine import aggregate_by_k
+from services.projection_service import investment_projection
 
-router = APIRouter(
-    prefix="/blackrock/challenge/v1",
-    tags=["Temporal Rules"]
-)
+RETIREMENT_AGE = 60
+NPS_RATE = 0.0711
+INDEX_RATE = 0.1449
 
 
-@router.post("/transactions:filter")
-def apply_temporal_rules(request: TemporalFilterRequest):
-    """
-    Full temporal constraints validator:
-    - rejects duplicate timestamps
-    - rejects negative amounts
-    - applies q/p rules
-    - aggregates by k periods
-    """
-
+def process_full_pipeline(request, rate):
     valid_transactions = []
     invalid_transactions = []
-    seen_timestamps = set()
+    seen = set()
 
-    # STEP 1 — Validate + convert expenses → transactions
+    # STEP 1 — validate + round
     for exp in request.transactions:
 
-        # ❌ negative amount check
         if exp.amount <= 0:
             invalid_transactions.append({
                 "date": exp.date,
                 "amount": exp.amount,
-                "message": "Negative or zero amount not allowed"
+                "message": "Negative amount not allowed"
             })
             continue
 
-        # ❌ duplicate timestamp check
-        if exp.date in seen_timestamps:
+        if exp.date in seen:
             invalid_transactions.append({
                 "date": exp.date,
                 "amount": exp.amount,
@@ -45,7 +32,7 @@ def apply_temporal_rules(request: TemporalFilterRequest):
             })
             continue
 
-        seen_timestamps.add(exp.date)
+        seen.add(exp.date)
 
         ceiling, rem = round_to_100(exp.amount)
 
@@ -56,14 +43,36 @@ def apply_temporal_rules(request: TemporalFilterRequest):
             "remanent": rem
         })
 
-    # STEP 2 — apply q/p rules only to valid transactions
+    # STEP 2 — apply temporal rules
     processed = apply_period_rules(valid_transactions, request.q, request.p)
 
-    # STEP 3 — group by k periods
+    # STEP 3 — aggregate by k periods
     grouped = aggregate_by_k(processed, request.k)
+
+    total_investment = sum(tx["remanent"] for tx in processed)
+
+    # STEP 4 — calculate returns
+    years = RETIREMENT_AGE - request.age
+
+    result = investment_projection(
+        total_investment,
+        rate,
+        years,
+        request.inflation / 100
+    )
 
     return {
         "valid_transactions": processed,
         "invalid_transactions": invalid_transactions,
-        "savings_by_period": grouped
+        "total_investment": total_investment,
+        "investment_breakdown": grouped,
+        "returns": result
     }
+
+
+def calculate_nps_full(request):
+    return process_full_pipeline(request, NPS_RATE)
+
+
+def calculate_index_full(request):
+    return process_full_pipeline(request, INDEX_RATE)

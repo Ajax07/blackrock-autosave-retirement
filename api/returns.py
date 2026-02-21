@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from services.projection_service import investment_projection
+from models.full_returns_models import FullReturnsRequest
+from core.full_returns_engine import calculate_nps_full, calculate_index_full
 
 router = APIRouter(
     prefix="/blackrock/challenge/v1",
@@ -7,13 +8,11 @@ router = APIRouter(
 )
 
 
-@router.post("/returns:index")
-def calculate_index_return(amount: float, age: int, inflation: float):
-    rate = 0.1449
-    return investment_projection(amount, rate, age, inflation)
-
-
 @router.post("/returns:nps")
-def calculate_nps_return(amount: float, age: int, inflation: float):
-    rate = 0.0711
-    return investment_projection(amount, rate, age, inflation)
+def nps_returns(request: FullReturnsRequest):
+    return calculate_nps_full(request)
+
+
+@router.post("/returns:index")
+def index_returns(request: FullReturnsRequest):
+    return calculate_index_full(request)
