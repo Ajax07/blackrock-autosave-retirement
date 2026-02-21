@@ -6,3 +6,5 @@ pytest
 locust
 python-dotenv
 psutil
+pytest
+httpx
